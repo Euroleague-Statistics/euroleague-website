@@ -90,9 +90,13 @@ namespace WebAPI.Services
                 clubVM.City = club.City;
                 clubVM.ClubCode = club.ClubCode;
 
-                clubVM.CountryCode2 = club.CountryCode.Code2;
-                clubVM.CountryCode3 = club.CountryCode.Code3;
-                clubVM.CountryName = club.CountryCode.Name;
+                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
+                if (countryCode != null)
+                {
+                    clubVM.CountryCode2 = countryCode.Code2;
+                    clubVM.CountryCode3 = countryCode.Code3;
+                    clubVM.CountryName = countryCode.Name;
+                }
             }
 
             return clubVM;
@@ -109,9 +113,13 @@ namespace WebAPI.Services
                 clubVM.City = club.City;
                 clubVM.ClubCode = club.ClubCode;
 
-                clubVM.CountryCode2 = club.CountryCode.Code2;
-                clubVM.CountryCode3 = club.CountryCode.Code3;
-                clubVM.CountryName = club.CountryCode.Name;
+                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
+                if (countryCode != null)
+                {
+                    clubVM.CountryCode2 = countryCode.Code2;
+                    clubVM.CountryCode3 = countryCode.Code3;
+                    clubVM.CountryName = countryCode.Name;
+                }
             }
 
             return clubVM;
@@ -128,9 +136,13 @@ namespace WebAPI.Services
                 clubVM.City = club.City;
                 clubVM.ClubCode = club.ClubCode;
 
-                clubVM.CountryCode2 = club.CountryCode.Code2;
-                clubVM.CountryCode3 = club.CountryCode.Code3;
-                clubVM.CountryName = club.CountryCode.Name;
+                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
+                if (countryCode != null)
+                {
+                    clubVM.CountryCode2 = countryCode.Code2;
+                    clubVM.CountryCode3 = countryCode.Code3;
+                    clubVM.CountryName = countryCode.Name;
+                }
             }
 
             return clubVM;
