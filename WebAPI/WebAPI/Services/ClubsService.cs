@@ -29,14 +29,54 @@ namespace WebAPI.Services
                 clubVM.City = club.City;
                 clubVM.ClubCode = club.ClubCode;
 
-                clubVM.CountryCode2 = club.CountryCode.Code2;
-                clubVM.CountryCode3 = club.CountryCode.Code3;
-                clubVM.CountryName = club.CountryCode.Name;
+                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
+                if (countryCode != null)
+                {
+                    clubVM.CountryCode2 = countryCode.Code2;
+                    clubVM.CountryCode3 = countryCode.Code3;
+                    clubVM.CountryName = countryCode.Name;
+                }
 
                 clubVMs.Add(clubVM);
             }
 
             return clubVMs;
+        }
+
+        public Club AddClubWithId(ClubVM clubVM)
+        {
+            var _club = new Club()
+            {
+                ClubCode = clubVM.ClubCode,
+                Name = clubVM.Name,
+                City = clubVM.City
+            };
+
+            var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Code3 == clubVM.CountryCode3);
+            if (countryCode == null)
+            {
+                // throw new Exception("Country Not Found");
+                CountryCode _countryCode = new CountryCode();
+                _countryCode.Code2 = clubVM.CountryCode2;
+                _countryCode.Code3 = clubVM.CountryCode3;
+                _countryCode.Name = clubVM.CountryName;
+                _countryCode.Status = 1;
+                _countryCode.Timestamp = DateTime.Now;
+
+                _club.CountryCode = _countryCode;
+                _club.CountryCodeId = _countryCode.Id;
+                _context.CountryCodes.Add(_countryCode);
+            }
+            else
+            {
+                _club.CountryCode = countryCode;
+                _club.CountryCodeId = countryCode.Id;
+            }
+
+            _context.Clubs.Add(_club);
+            _context.SaveChanges();
+
+            return _club;
         }
 
         public ClubVM GetClubById(Guid id)

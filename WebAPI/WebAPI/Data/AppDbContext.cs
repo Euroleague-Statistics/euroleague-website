@@ -16,7 +16,21 @@ namespace WebAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Club>().HasMany(c => c.HomePlayerStatistics)
+                .WithOne(ps => ps.HomeClub)
+                .HasForeignKey(ps => ps.HomeClubId);
 
+            modelBuilder.Entity<Club>().HasMany(c => c.AwayPlayerStatistics)
+                .WithOne(ps => ps.AwayClub)
+                .HasForeignKey(ps => ps.AwayClubId).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Club>().HasMany(c => c.HomeClubSchedule)
+                .WithOne(s => s.HomeClub)
+                .HasForeignKey(s => s.HomeClubId);
+
+            modelBuilder.Entity<Club>().HasMany(c => c.AwayClubSchedule)
+                .WithOne(s => s.AwayClub)
+                .HasForeignKey(s => s.AwayClubId).OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<Club> Clubs { get; set; }

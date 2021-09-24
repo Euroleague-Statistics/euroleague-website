@@ -47,6 +47,9 @@ namespace WebAPI.Models
         public string Season { get; set; }
         public sbyte Status { get; set; }
         public DateTime Timestamp { get; set; }
+        public Guid? HomeClubId { get; set; }
+        public Guid? AwayClubId { get; set; }
+        public Guid? PlayerId { get; set; }
 
         public Club? HomeClub { get; set; }
         public Club? AwayClub { get; set; }

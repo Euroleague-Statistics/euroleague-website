@@ -18,7 +18,10 @@ namespace WebAPI.Models
         public string Position { get; set; }
         public sbyte Status { get; set; }
         public DateTime Timestamp { get; set; }
+        public Guid? ClubId { get; set; }
+        public Guid? PlayerId { get; set; }
 
         public Club Club { get; set; }
+        public Player Player { get; set; }
     }
 }

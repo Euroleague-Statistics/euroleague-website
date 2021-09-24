@@ -15,5 +15,8 @@ namespace WebAPI.Models
         public string Name { get; set; }
         public sbyte Status { get; set; }
         public DateTime Timestamp { get; set; }
+
+        public List<Club> Clubs { get; set; }
+        public List<Player> Players { get; set; }
     }
 }

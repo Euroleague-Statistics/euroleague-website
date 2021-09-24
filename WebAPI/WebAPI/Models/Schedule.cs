@@ -21,6 +21,8 @@ namespace WebAPI.Models
         public StaticData.GameTypeEnum GamePhase { get; set; }
         public sbyte Status { get; set; }
         public DateTime Timestamp { get; set; }
+        public Guid? HomeClubId { get; set; }
+        public Guid? AwayClubId { get; set; }
 
         public Club? HomeClub { get; set; }
         public Club? AwayClub { get; set; }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.Models;
 using WebAPI.Services;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -28,6 +29,20 @@ namespace WebAPI.Controllers
         {
             var clubs = _clubsService.GetClubs();
             return Ok(clubs);
+        }
+
+        [HttpPost("add-club")]
+        public IActionResult AddClub([FromBody] ClubVM clubVM)
+        {
+            try
+            {
+                _clubsService.AddClubWithId(clubVM);
+                return Created(nameof(AddClub), clubVM);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("get-club-by-id/{id}")]

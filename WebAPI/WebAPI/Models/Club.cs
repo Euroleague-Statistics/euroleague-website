@@ -15,7 +15,13 @@ namespace WebAPI.Models
         public string City { get; set; }
         public sbyte Status { get; set; }
         public DateTime Timestamp { get; set; }
+        public int? CountryCodeId { get; set; }
 
         public CountryCode CountryCode { get; set; }
+        public List<PlayerInfo> PlayerInfos { get; set; }
+        public List<PlayerStatistic> HomePlayerStatistics { get; set; }
+        public List<PlayerStatistic> AwayPlayerStatistics { get; set; }
+        public List<Schedule> HomeClubSchedule { get; set; }
+        public List<Schedule> AwayClubSchedule { get; set; }
     }
 }

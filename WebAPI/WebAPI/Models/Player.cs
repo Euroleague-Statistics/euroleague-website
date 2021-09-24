@@ -17,9 +17,10 @@ namespace WebAPI.Models
         public decimal? Height { get; set; }
         public sbyte Status { get; set; }
         public DateTime Timestamp { get; set; }
+        public int? CountryCodeId { get; set; }
 
         public CountryCode CountryCode { get; set; }
-        public ICollection<PlayerInfo> PlayerInfo { get; set; }
+        public List<PlayerInfo> PlayerInfo { get; set; }
 
     }
 }
