@@ -62,10 +62,21 @@ namespace WebAPI.Services
                     playerStatisticVM.DNP = playerStatistic.DNP;
                     playerStatisticVM.Season = playerStatistic.Season;
 
-                    playerStatisticVM.HomeClubId = playerStatistic.HomeClub.Id;
-                    playerStatisticVM.HomeClubName = playerStatistic.HomeClub.Name;
-                    playerStatisticVM.AwayClubId = playerStatistic.AwayClub.Id;
-                    playerStatisticVM.AwayClubName = playerStatistic.AwayClub.Name;
+                    var homeClub = _context.PlayerStatistics.FirstOrDefault(m => m.HomeClubId == playerStatistic.HomeClub.Id);
+                    if (homeClub != null)
+                    {
+                        playerStatisticVM.HomeClubId = playerStatistic.HomeClub.Id;
+                        playerStatisticVM.HomeClubName = playerStatistic.HomeClub.Name;
+                    }
+
+                    var awayClub = _context.PlayerStatistics.FirstOrDefault(m => m.AwayClubId == playerStatistic.AwayClub.Id);
+                    if (awayClub != null)
+                    {
+                        playerStatisticVM.AwayClubId = playerStatistic.AwayClub.Id;
+                        playerStatisticVM.AwayClubName = playerStatistic.AwayClub.Name;
+                    }
+
+                    playerStatisticsVM.Add(playerStatisticVM);
                 }
 
             }

@@ -98,6 +98,67 @@ namespace WebAPI.Services
             return playerVM;
         }
 
+        public void DeletePlayerById(Guid id)
+        {
+            var player = _context.Players.FirstOrDefault(n => n.Id == id);
+            if (player != null)
+            {
+                _context.Players.Remove(player);
+                _context.SaveChanges();
+            }
+        }
+
+        public Player UpdatePlayerById(Guid id, PlayerVM playerVM)
+        {
+            var player = _context.Players.FirstOrDefault(n => n.Id == id);
+            if (player != null)
+            {
+                player.PCode = playerVM.PCode;
+                player.Name = playerVM.Name;
+                player.Surname = playerVM.Surname;
+                player.DOB = playerVM.DOB;
+                player.Height = playerVM.Height;
+                player.Status = 1;
+                player.Timestamp = DateTime.Now;
+                var countryCodeId = _context.CountryCodes.FirstOrDefault(n => n.Code3 == playerVM.CountryCode3);
+                if (countryCodeId != null)
+                {
+                    player.CountryCodeId = countryCodeId.Id;
+                }
+
+                _context.SaveChanges();
+            }
+
+            return player;
+        }
+
+        public void AddPlayer(PlayerVM playerVM)
+        {
+            var countryCodeId = _context.CountryCodes.FirstOrDefault(cc => cc.Code3 == playerVM.CountryCode3);
+
+            if (countryCodeId != null)
+            {
+                var player = new Player()
+                {
+                    PCode = playerVM.PCode,
+                    Name = playerVM.Name,
+                    Surname = playerVM.Surname,
+                    DOB = playerVM.DOB,
+                    Height = playerVM.Height,
+                    Status = 1,
+                    Timestamp = DateTime.Now,
+                    CountryCodeId = countryCodeId.Id
+                };
+
+                _context.Players.Add(player);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Country Code not found!");
+            }
+        }
+
         public PlayerVM GetPlayerByPlayerCode(string code)
         {
             PlayerVM playerVM = new PlayerVM();

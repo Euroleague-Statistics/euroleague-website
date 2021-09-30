@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI.Data;
 using WebAPI.Models;
 using WebAPI.Services;
+using WebAPI.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -16,12 +17,12 @@ namespace WebAPI.Controllers
     public class PlayersController : ControllerBase
     {
         private PlayersService _playersService;
-        private PlayerStatisticsService _playerStatisticsService;
+        //private PlayerStatisticsService _playerStatisticsService;
 
-        public PlayersController(PlayersService playersService, PlayerStatisticsService playerStatisticsService)
+        public PlayersController(PlayersService playersService/*, PlayerStatisticsService playerStatisticsService*/)
         {
             _playersService = playersService;
-            _playerStatisticsService = playerStatisticsService;
+            //_playerStatisticsService = playerStatisticsService;
         }
 
         // GET: api/Clubs
@@ -60,11 +61,53 @@ namespace WebAPI.Controllers
             return Ok(player);
         }
 
-        [HttpGet("get-statistics-by-player-id/{id}")]
-        public IActionResult GetStatisticsByPlayerId(Guid id)
+        //[HttpGet("get-statistics-by-player-id/{id}")]
+        //public IActionResult GetStatisticsByPlayerId(Guid id)
+        //{
+        //    var playerStatistics = _playerStatisticsService.GetPlayerStatisticsById(id);
+        //    return Ok(playerStatistics);
+        //}
+
+        [HttpPost("add-player")]
+        public IActionResult AddPlayer([FromBody] PlayerVM playerVM)
         {
-            var playerStatistics = _playerStatisticsService.GetPlayerStatisticsById(id);
-            return Ok(playerStatistics);
+            try
+            {
+                _playersService.AddPlayer(playerVM);
+                return Created(nameof(AddPlayer), playerVM);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update-player-by-id/{id}")]
+        public IActionResult UpdateCountryById(Guid id, [FromBody] PlayerVM playerVM)
+        {
+            try
+            {
+                var updatedClub = _playersService.UpdatePlayerById(id, playerVM);
+                return Ok(updatedClub);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("delete-player-by-id/{id}")]
+        public IActionResult DeletePlayerById(Guid id)
+        {
+            try
+            {
+                _playersService.DeletePlayerById(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

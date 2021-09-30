@@ -30,14 +30,15 @@ namespace WebAPI.Services
                 clubVM.ClubCode = club.ClubCode;
 
                 var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
-                if (countryCode != null)
+                if (countryCode == null)
                 {
-                    clubVM.CountryCode2 = countryCode.Code2;
-                    clubVM.CountryCode3 = countryCode.Code3;
-                    clubVM.CountryName = countryCode.Name;
+                    throw new Exception("Country Not Found");
                 }
 
-                clubVMs.Add(clubVM);
+                clubVM.CountryCode2 = countryCode.Code2;
+                clubVM.CountryCode3 = countryCode.Code3;
+                clubVM.CountryName = countryCode.Name;
+                clubVMs.Add(clubVM);      
             }
 
             return clubVMs;
@@ -45,38 +46,57 @@ namespace WebAPI.Services
 
         public Club AddClubWithId(ClubVM clubVM)
         {
+            var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Code3 == clubVM.CountryCode3);
+            if (countryCode == null)
+            {
+                throw new Exception("Country Not Found");
+            }
+
             var _club = new Club()
             {
                 ClubCode = clubVM.ClubCode,
                 Name = clubVM.Name,
-                City = clubVM.City
+                City = clubVM.City,
+                CountryCode = countryCode,
+                CountryCodeId = countryCode.Id
             };
-
-            var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Code3 == clubVM.CountryCode3);
-            if (countryCode == null)
-            {
-                // throw new Exception("Country Not Found");
-                CountryCode _countryCode = new CountryCode();
-                _countryCode.Code2 = clubVM.CountryCode2;
-                _countryCode.Code3 = clubVM.CountryCode3;
-                _countryCode.Name = clubVM.CountryName;
-                _countryCode.Status = 1;
-                _countryCode.Timestamp = DateTime.Now;
-
-                _club.CountryCode = _countryCode;
-                _club.CountryCodeId = _countryCode.Id;
-                _context.CountryCodes.Add(_countryCode);
-            }
-            else
-            {
-                _club.CountryCode = countryCode;
-                _club.CountryCodeId = countryCode.Id;
-            }
 
             _context.Clubs.Add(_club);
             _context.SaveChanges();
 
-            return _club;
+            return _club;         
+        }
+
+        public void DeleteClubById(Guid id)
+        {
+            var club = _context.Clubs.FirstOrDefault(c => c.Id == id);
+            if (club != null)
+            {
+                _context.Clubs.Remove(club);
+                _context.SaveChanges();
+            }
+        }
+
+        public Club UpdateClubById(Guid id, ClubVM clubVM)
+        {
+            var club = _context.Clubs.FirstOrDefault(n => n.Id == id);
+            if (club != null)
+            {
+                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Code3 == clubVM.CountryCode3);
+                if (countryCode == null)
+                {
+                    throw new Exception("Country Not Found");
+                }
+
+                club.ClubCode = clubVM.ClubCode;
+                club.Name = clubVM.Name;
+                club.City = clubVM.City;
+                club.CountryCode = countryCode;
+                club.CountryCodeId = countryCode.Id;
+                _context.SaveChanges();
+            }
+
+            return club;
         }
 
         public ClubVM GetClubById(Guid id)
@@ -86,17 +106,18 @@ namespace WebAPI.Services
             var club = _context.Clubs.FirstOrDefault(club => club.Id == id);
             if (club != null)
             {
+                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
+                if (countryCode == null)
+                {
+                    throw new Exception("CountryCode not found!");
+                }
+                
                 clubVM.Name = club.Name;
                 clubVM.City = club.City;
                 clubVM.ClubCode = club.ClubCode;
-
-                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
-                if (countryCode != null)
-                {
-                    clubVM.CountryCode2 = countryCode.Code2;
-                    clubVM.CountryCode3 = countryCode.Code3;
-                    clubVM.CountryName = countryCode.Name;
-                }
+                clubVM.CountryCode2 = countryCode.Code2;
+                clubVM.CountryCode3 = countryCode.Code3;
+                clubVM.CountryName = countryCode.Name;
             }
 
             return clubVM;
@@ -109,17 +130,19 @@ namespace WebAPI.Services
             var club = _context.Clubs.FirstOrDefault(club => club.ClubCode == code);
             if (club != null)
             {
+
+                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
+                if (countryCode == null)
+                {
+                    throw new Exception("CountryCode not found!");
+                }
+
                 clubVM.Name = club.Name;
                 clubVM.City = club.City;
                 clubVM.ClubCode = club.ClubCode;
-
-                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
-                if (countryCode != null)
-                {
-                    clubVM.CountryCode2 = countryCode.Code2;
-                    clubVM.CountryCode3 = countryCode.Code3;
-                    clubVM.CountryName = countryCode.Name;
-                }
+                clubVM.CountryCode2 = countryCode.Code2;
+                clubVM.CountryCode3 = countryCode.Code3;
+                clubVM.CountryName = countryCode.Name;                
             }
 
             return clubVM;
@@ -132,17 +155,18 @@ namespace WebAPI.Services
             var club = _context.Clubs.FirstOrDefault(club => club.Name == name);
             if (club != null)
             {
+                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
+                if (countryCode == null)
+                {
+                    throw new Exception("CountryCode not found!");
+                }
+
                 clubVM.Name = club.Name;
                 clubVM.City = club.City;
                 clubVM.ClubCode = club.ClubCode;
-
-                var countryCode = _context.CountryCodes.FirstOrDefault(c => c.Id == club.CountryCodeId);
-                if (countryCode != null)
-                {
-                    clubVM.CountryCode2 = countryCode.Code2;
-                    clubVM.CountryCode3 = countryCode.Code3;
-                    clubVM.CountryName = countryCode.Name;
-                }
+                clubVM.CountryCode2 = countryCode.Code2;
+                clubVM.CountryCode3 = countryCode.Code3;
+                clubVM.CountryName = countryCode.Name;        
             }
 
             return clubVM;

@@ -38,6 +38,9 @@ namespace WebAPI
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
 
             services.AddTransient<ClubsService>();
+            services.AddTransient<CountryCodesService>();
+            services.AddTransient<PlayersService>();
+            services.AddTransient<PlayerStatisticsService>();
 
             services.AddSwaggerGen(c =>
             {

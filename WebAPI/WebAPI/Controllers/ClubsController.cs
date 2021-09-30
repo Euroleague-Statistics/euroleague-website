@@ -45,6 +45,34 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpPut("update-club-by-id/{id}")]
+        public IActionResult UpdateClubById(Guid id, [FromBody] ClubVM clubVM)
+        {
+            try
+            {
+                var updatedClub = _clubsService.UpdateClubById(id, clubVM);
+                return Ok(updatedClub);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("delete-club-by-id/{id}")]
+        public IActionResult DeleteClubById(Guid id)
+        {
+            try
+            {
+                _clubsService.DeleteClubById(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("get-club-by-id/{id}")]
         public IActionResult GetClubById(Guid id)
         {
