@@ -96,7 +96,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("delete-player-by-id/{id}")]
+        [HttpDelete("delete-player-by-id/{id}")]
         public IActionResult DeletePlayerById(Guid id)
         {
             try
